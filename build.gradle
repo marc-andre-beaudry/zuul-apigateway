@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+    baseName = 'api-gateway'
+    version =  '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR5"
+    }
+}
+
+dependencies {
+    compileOnly("org.projectlombok:lombok:1.16.10")
+
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    compile("org.springframework.cloud:spring-cloud-starter-zuul")
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("com.google.guava:guava:19.0")
+    compile("org.slf4j:slf4j-api:1.7.21")
+
+    testCompile("org.assertj:assertj-core")
+    testCompile("junit:junit")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework:spring-test")
+
+    testCompile("org.spockframework:spock-core")
+    testCompile("org.spockframework:spock-spring")
+    testCompile("org.codehaus.groovy:groovy-all")
+    testCompile("org.mockito:mockito-core")
+    testCompile("cglib:cglib-nodep:3.2.2")
+}
+
+test {
+    include '**/*Spec.class', '**/*Test.class', '**/*SpecIT.class', '**/*IT.class'
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}

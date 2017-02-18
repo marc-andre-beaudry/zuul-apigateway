@@ -1,0 +1,13 @@
+server:
+  port: 9001
+
+zuul:
+  host:
+    socket-timeout-millis: 30000
+  routes:
+    api:
+      url: http://localhost:8080/api
+
+ribbon:
+  eureka:
+    enabled: false
